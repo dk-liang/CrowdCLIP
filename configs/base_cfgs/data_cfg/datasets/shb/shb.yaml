@@ -1,0 +1,7 @@
+data_cfg:
+  train_images_root: ./processed_datasets/SHB/train_data/
+  val_images_root: ./processed_datasets/SHB/test_data/
+  test_images_root: ./processed_datasets/SHB/test_data/
+  train_data_file: ./processed_datasets/SHB/train_data/data_list/train.txt
+  val_data_file: ./processed_datasets/SHB/test_data/data_list/test.txt
+  test_data_file: ./processed_datasets/SHB/test_data/data_list/test.txt

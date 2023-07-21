@@ -1,0 +1,16 @@
+ftfy==6.1.1
+matplotlib==3.5.2
+omegaconf==2.2.0
+pandas==1.4.2
+pytorch-lightning==1.6.3
+PyYAML==6.0
+regex==2022.4.24
+toml==0.10.2
+ipython
+tqdm==4.64.0
+openpyxl==3.0.10
+opencv-python==4.6.0.66
+scipy==1.9.1
+seaborn==0.12.1
+tensorboard==2.12.0
+setuptools==59.5.0

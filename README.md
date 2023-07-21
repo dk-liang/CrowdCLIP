@@ -1,14 +1,92 @@
 # CrowdCLIP
 An officical implementation of "CrowdCLIP: Unsupervised Crowd Counting via Vision-Language Model" (Accepted by CVPR 2023).
-
-# Introduction
-Supervised crowd counting relies heavily on costly manual labeling, which is difficult and expensive, especially in dense scenes. To alleviate the problem, we propose a novel unsupervised framework for crowd counting, named CrowdCLIP. The core idea is built on two observations: 1) the recent contrastive pre-trained vision-language model (CLIP) has presented impressive performance on various downstream tasks; 2) there is a natural mapping between crowd patches and count text. To the best of our knowledge, CrowdCLIP is the first to investigate the visionlanguage knowledge to solve the counting problem. Specifically, in the training stage, we exploit the multi-modal ranking loss by constructing ranking text prompts to match the size-sorted crowd patches to guide the image encoder learning. In the testing stage, to deal with the diversity of image patches, we propose a simple yet effective progressive filtering strategy to first select the highly potential crowd patches and then map them into the language space with various counting intervals. Extensive experiments on five challenging datasets demonstrate that the proposed CrowdCLIP achieves superior performance compared to previous unsupervised state-of-the-art counting methods. Notably, CrowdCLIP even surpasses some popular fully-supervised methods under the cross-dataset setting. 
 ![intro](figs/intro.png)
 
+# Installation
+Our experiments are tested on the following environments: Single 3090 GPU, Python: 3.8 PyTorch: 1.10 CUDA: 11.0
 
-# Training
-Code will be released soon.
+```
+conda create --name crowdclip python=3.8 -y
+conda activate crowdclip
+conda install pytorch==1.10.0 torchvision==0.11.0 torchaudio==0.10.0 cudatoolkit=11.3 -c pytorch -c conda-forge
+git clone [this repo]
+cd CrowdCLIP
+pip install -r requirements.txt
+```
 
+
+# Datasets
+- Download UCF-QNRF dataset from [here](https://www.crcv.ucf.edu/data/ucf-qnrf/) <br />
+- Download ShanghaiTech dataset from [here]  <br />
+
+# Prepare data
+1. Download the datasets, then put them under folder `datasets`. The folder structure should look like this:
+```
+CrowdCLIP
+├──CLIP
+├──configs
+├──scripts
+├──datasets
+    ├──ShanghaiTech
+        ├──part_A_final
+        ├──part_B_final
+    ├──UCF-QNRF
+        ├──Train
+        ├──Test
+```
+
+2. Generate the image patches
+
+For UCF-QNRF dataset: 
+```bash
+python configs/base_cfgs/data_cfg/datasets/qnrf/preprocess_qnrf.py
+```
+
+For ShanghaiTech dataset: <br />
+```bash
+python configs/base_cfgs/data_cfg/datasets/sha/preprocess_sha.py 
+python configs/base_cfgs/data_cfg/datasets/shb/preprocess_shb.py 
+```
+The folder structure should look like this:<br />
+```
+CrowdCLIP
+├──CLIP
+├──configs
+├──scripts
+├──datasets
+├──processed_datasets
+    ├──SHA
+        ├──test_data
+        ├──train_data
+    ├──SHB
+        ├──test_data
+        ├──train_data
+    ├──UCF-QNRF
+        ├──test_data
+        ├──train_data
+```
+
+3. Install CLIP
+```
+cd CrowdCLIP/CLIP
+python setup.py develop
+```
+
+
+# Model
+Download the pretrained model from [Baidu-Disk](https://pan.baidu.com/s/19B4r-iXHSypj4GU7v2EoEA), passward:ale1;
+
+# Training 
+We are preparing the journal version. The code will be coming soon.
+
+# Testing
+Download the pretrained model and put them in ```CrowdCLIP/save_model```<br />
+Example: <br />
+```
+python scripts/run.py --config save_model/pretrained_qnrf/config.yaml --config configs/base_cfgs/data_cfg/datasets/qnrf/qnrf.yaml --test_only --gpu_id 0
+python scripts/run.py --config save_model/pretrained_sha/config.yaml --config configs/base_cfgs/data_cfg/datasets/sha/sha.yaml --test_only --gpu_id 0
+python scripts/run.py --config save_model/pretrained_shb/config.yaml --config configs/base_cfgs/data_cfg/datasets/shb/shb.yaml --test_only --gpu_id 0
+```
 
 ## Acknowledgement
 Many thanks to the brilliant works ([CLIP](https://github.com/openai/CLIP) and [OrdinalCLIP](https://github.com/xk-huang/OrdinalCLIP))!

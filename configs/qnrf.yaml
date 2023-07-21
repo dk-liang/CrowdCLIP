@@ -1,0 +1,94 @@
+runner_cfg:
+  seed: 114514
+  output_dir: results/dummy
+  optimizer_and_scheduler_cfg:
+    param_dict_cfg:
+      lr_image_encoder: 0.000001
+      lr_text_encoder: 0.0
+      lr_logit_scale: 0.0
+      staged_lr_image_encoder:
+        new_layers: []
+        base_lr_mult: 1.0
+        new_lr_mult: 1.0
+    optimizer_cfg:
+      optimizer_name: radam
+      lr: 0.0001
+      weight_decay: 0.0
+      momentum: 0.9
+      sgd_dampening: 0.0
+      sgd_nesterov: False
+      rmsprop_alpha: 0.99
+      adam_beta1: 0.9
+      adam_beta2: 0.999
+      staged_lr: null
+      lookahead: False
+    lr_scheduler_cfg:
+      lr_scheduler_name: multi_step
+      stepsize:
+        - 60
+      gamma: 0.1
+      max_epochs: &max_epochs 100
+      warmup_epoch: 0
+      warmup_cons_lr: 1.0e-05
+      warmup_min_lr: 1.0e-05
+      warmup_type: constant
+      warmup_recount: True
+  load_weights_cfg:
+    init_model_weights: null
+    init_image_encoder_weights: null
+    init_text_encoder_weights: null
+  loss_weights:
+    rank_loss: 1.0
+  model_cfg:
+    type: CrowdCLIP
+    text_encoder_name: ViT-B/16
+    image_encoder_name: ViT-B/16
+data_cfg:
+  train_images_root: bonjour
+  val_images_root: bonjour
+  test_images_root: bonjour
+  train_data_file: bonjour
+  val_data_file: bonjour
+  test_data_file: bonjour
+  few_shot:
+    num_shots: 0
+  label_distributed_shift:
+    num_topk_scaled_class: 0
+    scale_factor: 1.0
+  use_long_tail: false
+  transforms_cfg:
+    input_transforms:
+      - random_resized_crop
+      - random_hflip
+      - normalize
+    input_resize:
+      - 256
+      - 256
+    input_size:
+      - 224
+      - 224
+    pixel_mean:
+      - 0.485
+      - 0.456
+      - 0.406
+    pixel_std:
+      - 0.229
+      - 0.224
+      - 0.225
+  train_dataloder_cfg:
+    num_workers: 8
+    batch_size: 6
+    shuffle: false
+  eval_dataloder_cfg:
+    num_workers: 8
+    batch_size: 16
+    shuffle: false
+trainer_cfg:
+  max_epochs: *max_epochs
+  precision: 16
+  accelerator: gpu
+  devices: 1
+  check_val_every_n_epoch: 1
+  num_sanity_val_steps: 1
+  fast_dev_run: false
+test_only: false
