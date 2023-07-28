@@ -74,7 +74,7 @@ python setup.py develop
 
 
 # Model
-Download the pretrained model from [Baidu-Disk](https://pan.baidu.com/s/19B4r-iXHSypj4GU7v2EoEA), passward:ale1;
+Download the pretrained model from [Baidu-Disk](https://pan.baidu.com/s/19B4r-iXHSypj4GU7v2EoEA), passward:ale1; or [Onedrive](https://1drv.ms/f/s!Ak_WZsh5Fl0lhmAvvpa7EFq1uSSS?e=brRQ00);
 
 # Training 
 We are preparing the journal version. The code will be coming soon.
